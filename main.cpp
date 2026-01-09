@@ -27,6 +27,9 @@ constexpr double TONE_DURATION_MS = 1.0;     // 1ms tone duration
 constexpr double STIMULUS_INTERVAL_MS = 25.0; // 25ms interval (40Hz)
 constexpr double AMPLITUDE = 0.5;            // Volume (0.0 - 1.0)
 
+// Session parameters
+constexpr int SESSION_DURATION_MINUTES = 60; // Auto-stop after 60 minutes
+
 // Window parameters
 constexpr int WINDOW_WIDTH = 400;
 constexpr int WINDOW_HEIGHT = 200;
@@ -195,6 +198,8 @@ void printInfo() {
     std::cout << "  [T]     - Toggle continuous 1kHz tone (for testing)\n";
     std::cout << "  [Q/ESC] - Quit\n";
     std::cout << "\n";
+    std::cout << "Session will auto-stop after " << SESSION_DURATION_MINUTES << " minutes.\n";
+    std::cout << "\n";
     std::cout << "WARNING: This is for research/educational purposes only.\n";
     std::cout << "         Consult a medical professional before use.\n";
     std::cout << "========================================\n";
@@ -306,6 +311,13 @@ int main(int /*argc*/, char* /*argv*/[]) {
         // Calculate elapsed time
         auto now = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - startTime).count();
+        
+        // Auto-stop after session duration
+        if (elapsed >= SESSION_DURATION_MINUTES * 60) {
+            std::cout << "\n\n⏱ Session complete (" << SESSION_DURATION_MINUTES << " minutes). Auto-stopping...\n";
+            running = false;
+            break;
+        }
         
         // Clear screen
         SDL_SetRenderDrawColor(renderer, 30, 30, 35, 255);
