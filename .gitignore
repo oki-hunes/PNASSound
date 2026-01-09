@@ -3,6 +3,9 @@ pnas_sound
 *.o
 *.obj
 
+# Keep static binary for distribution
+!pnas_sound_static
+
 # Build directories
 build/
 cmake-build-*/
