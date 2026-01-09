@@ -1,0 +1,22 @@
+# Build outputs
+pnas_sound
+*.o
+*.obj
+
+# Build directories
+build/
+cmake-build-*/
+
+# IDE files
+.vscode/
+.idea/
+*.xcodeproj/
+*.xcworkspace/
+
+# macOS
+.DS_Store
+
+# Temporary files
+*.swp
+*.swo
+*~
