@@ -9,7 +9,32 @@ PNAS論文「Long-term effects of forty-hertz auditory stimulation as a treatmen
 - **刺激レート**: 40Hz（25ミリ秒ごとに1回）
 - **強度**: 60dB
 
-## 必要条件
+## ダウンロード（macOS）
+
+macOSユーザーは `pnas_sound_static` をダウンロードして、そのまま実行できます（SDL2のインストール不要）。
+
+```bash
+chmod +x pnas_sound_static
+./pnas_sound_static
+```
+
+## 機能
+
+- **40Hzパルスモード**: 論文仕様に基づいた1ms/1kHzトーンを40Hzで繰り返し
+- **連続1kHzテストモード**: 1kHz純音の確認用
+- **ビジュアルUI**: パルスインジケーター、ステータスバー、経過時間表示
+
+## 操作方法
+
+| キー | 機能 |
+|------|------|
+| SPACE | 一時停止 / 再開 |
+| T | 連続1kHzトーン切り替え（テスト用） |
+| Q / ESC | 終了 |
+
+## ソースからビルド
+
+### 必要条件
 
 - C++17対応コンパイラ
 - SDL2ライブラリ
@@ -26,12 +51,20 @@ brew install sdl2
 sudo apt-get install libsdl2-dev
 ```
 
-## ビルド方法
+### ビルド方法
 
-### Makefileを使用
+#### 動的リンク版（SDL2必要）
 
 ```bash
 make
+./pnas_sound
+```
+
+#### 静的リンク版（macOSのみ、SDL2不要で配布可能）
+
+```bash
+make static
+./pnas_sound_static
 ```
 
 ### CMakeを使用
@@ -42,23 +75,6 @@ cd build
 cmake ..
 make
 ```
-
-## 実行
-
-```bash
-./pnas_sound
-```
-
-または
-
-```bash
-make run
-```
-
-## 操作方法
-
-- **スペースキー**: 一時停止/再開
-- **Q または ESC**: 終了
 
 ## ⚠️ 注意事項
 
