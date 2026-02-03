@@ -68,6 +68,41 @@ make static
 ./pnas_sound_static
 ```
 
+#### Apple Silicon (arm64) での注意
+
+Homebrew は Apple Silicon では /opt/homebrew 配下に入ります。もし SDL2 が見つからない場合は、
+`CMAKE_PREFIX_PATH=/opt/homebrew` を指定してください。
+
+#### Universal バイナリ（arm64 + x86_64）
+
+Universal 化には Rosetta と x86_64 用 Homebrew（/usr/local）と SDL2 が必要です。
+
+```bash
+# Rosetta
+softwareupdate --install-rosetta --agree-to-license
+
+# x86_64 Homebrew
+arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+arch -x86_64 /usr/local/bin/brew install sdl2
+
+# arm64/x86_64 を別々にビルドして結合
+arch -x86_64 env PATH=/usr/local/bin:$PATH make clean static
+mv pnas_sound_static pnas_sound_static_x86_64
+
+arch -arm64 env PATH=/opt/homebrew/bin:$PATH make clean static
+mv pnas_sound_static pnas_sound_static_arm64
+
+lipo -create pnas_sound_static_x86_64 pnas_sound_static_arm64 -output pnas_sound_static
+```
+
+#### macOS アプリ化
+
+```bash
+mkdir -p PNASSound.app/Contents/{MacOS,Resources}
+cp pnas_sound_static PNASSound.app/Contents/MacOS/PNASSound
+chmod +x PNASSound.app/Contents/MacOS/PNASSound
+```
+
 ### CMakeを使用
 
 ```bash
