@@ -3,12 +3,14 @@
 
 CXX = clang++
 CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
-SDL2_CFLAGS = $(shell sdl2-config --cflags)
+SDL2_CFLAGS = $(shell sdl2-config --cflags | sed 's|/include/SDL2|/include|g')
 SDL2_LIBS = $(shell sdl2-config --libs)
 
 # Static linking libraries for macOS
-SDL2_STATIC_LIB = /usr/local/opt/sdl2/lib/libSDL2.a
-SDL2_STATIC_MAIN = /usr/local/opt/sdl2/lib/libSDL2main.a
+BREW_PREFIX ?= $(shell brew --prefix 2>/dev/null)
+SDL2_PREFIX ?= $(shell brew --prefix sdl2 2>/dev/null)
+SDL2_STATIC_LIB = $(if $(SDL2_PREFIX),$(SDL2_PREFIX),$(BREW_PREFIX)/opt/sdl2)/lib/libSDL2.a
+SDL2_STATIC_MAIN = $(if $(SDL2_PREFIX),$(SDL2_PREFIX),$(BREW_PREFIX)/opt/sdl2)/lib/libSDL2main.a
 MACOS_FRAMEWORKS = -framework CoreAudio -framework AudioToolbox -framework CoreFoundation \
                    -framework CoreGraphics -framework CoreVideo -framework Cocoa \
                    -framework IOKit -framework ForceFeedback -framework Carbon \
